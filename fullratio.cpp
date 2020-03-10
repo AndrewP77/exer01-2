@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #ifndef CONTEST
 #include "fullratio.hpp"
@@ -9,27 +10,25 @@ rational::rational (int n, int d) {
 }
 
 rational operator + (const rational &x, const rational &y) {
-  int gcd=rational::gcd(x.nom*y.den+y.nom*x.den, x.den*y.den);
-  return rational ((x.nom*y.den+y.nom*x.den)/gcd, (x.den*y.den)/gcd);
+  return rational ((x.nom*y.den+y.nom*x.den), (x.den*y.den));
 }
 
 rational operator - (const rational &x, const rational &y) {
-  int gcd=rational::gcd(x.nom*y.den-y.nom*x.den, x.den*y.den);
-  return rational ((x.nom*y.den-y.nom*x.den)/gcd, (x.den*y.den)/gcd);
+  return rational ((x.nom*y.den-y.nom*x.den), (x.den*y.den));
 }
 
 rational operator * (const rational &x, const rational &y) {
-  int gcd=rational::gcd(x.nom*y.nom, x.den*y.den);
-  return rational ((x.nom*y.nom)/gcd, (x.den*y.den)/gcd);
+  return rational ((x.nom*y.nom), (x.den*y.den));
 }
 
 rational operator / (const rational &x, const rational &y) {
-  int gcd=rational::gcd(x.nom*y.den, x.den*y.nom);
-  return rational ((x.nom*y.den)/gcd, (x.den*y.nom)/gcd);
+  return rational ((x.nom*y.den), (x.den*y.nom));
 }
 
 std::ostream & operator << (std::ostream &out, const rational &x) {
-  out << x.nom << "/" << x.den;
+  int a=abs(x.nom), b=abs(x.den), gcd=rational::gcd(a, b);
+  if (x.nom<0 xor x.den<0) out << "-" << a/gcd << "/" << b/gcd;
+  else out << a/gcd << "/" << b/gcd;
   return out;
 }
 
